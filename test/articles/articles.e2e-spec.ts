@@ -1,7 +1,7 @@
 import {INestApplication} from "@nestjs/common";
 import * as request from 'supertest';
 import {Test, TestingModule} from "@nestjs/testing";
-import {AppModule} from "../../src/app.module";
+import {AppModule} from "../../src/infra/app.module";
 
 describe('articles', () => {
   const articleUuid = '95521d6d-f0dc-468e-800c-7ee6c95d0c18';
