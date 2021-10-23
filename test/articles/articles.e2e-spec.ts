@@ -1,7 +1,7 @@
-import {INestApplication} from "@nestjs/common";
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import {Test, TestingModule} from "@nestjs/testing";
-import {AppModule} from "../../src/infra/app.module";
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../../src/infra/app.module';
 
 describe('articles', () => {
   const articleUuid = '95521d6d-f0dc-468e-800c-7ee6c95d0c18';
@@ -16,22 +16,18 @@ describe('articles', () => {
     await app.init();
   });
 
-  it ('list articles', async () => {
-    await request(app.getHttpServer())
-      .get('/articles')
-      .expect(200);
+  it('list articles', async () => {
+    await request(app.getHttpServer()).get('/articles').expect(200);
   });
 
-  it ('get one article', async () => {
+  it('get one article', async () => {
     await request(app.getHttpServer())
       .get('/articles/' + articleUuid)
       .expect(200);
   });
 
-  it ('post article', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/articles')
-      .expect(201);
+  it('post article', async () => {
+    const response = await request(app.getHttpServer()).post('/articles').expect(201);
 
     expect(response.text).toContain('-'); // Check uuid response.
   });
