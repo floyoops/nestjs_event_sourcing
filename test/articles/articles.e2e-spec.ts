@@ -29,9 +29,11 @@ describe('articles', () => {
   });
 
   it ('post article', async () => {
-    await request(app.getHttpServer())
+    const response = await request(app.getHttpServer())
       .post('/articles')
       .expect(201);
+
+    expect(response.text).toContain('-'); // Check uuid response.
   });
 
   it('put article', async () => {
