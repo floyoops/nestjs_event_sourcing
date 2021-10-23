@@ -1,5 +1,15 @@
 {
   "compilerOptions": {
+    "rootDirs": [
+      "./src",
+      "./test"
+    ],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@domain/*": ["src/domain/*"],
+      "@infra/*": ["src/infra/*"],
+      "@test/*": ["test/*"]
+    },
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -11,6 +21,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   }
 }

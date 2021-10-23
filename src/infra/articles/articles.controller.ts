@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, InternalServerErrorException, Post, Put } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateANewArticleCommand } from '../../app/command/articles/create-a-new-article/create-a-new-article.command';
+import { CreateANewArticleCommand } from '@app/command/articles/create-a-new-article/create-a-new-article.command';
 
 @Controller('articles')
 export class ArticlesController {
