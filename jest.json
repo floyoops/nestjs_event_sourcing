@@ -12,6 +12,7 @@
     "@app/(.*)$": "<rootDir>/src/app/$1",
     "@domain/(.*)$": "<rootDir>/src/infra/$1",
     "@infra/(.*)$": "<rootDir>/src/infra/$1",
+    "@ui/(.*)$": "<rootDir>/src/ui/$1",
     "@test/(.*)$": "<rootDir>/test/$1"
   }
 }

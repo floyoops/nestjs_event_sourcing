@@ -58,6 +58,7 @@
     "@root": "src",
     "@app": "app",
     "@domain": "domain",
-    "@infra": "infra"
+    "@infra": "infra",
+    "@ui": "ui"
   }
 }

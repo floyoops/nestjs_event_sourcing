@@ -1,6 +1,6 @@
 import { CreateANewArticleCommandHandler } from '@app/command/articles/create-a-new-article/create-a-new-article.command-handler';
 import { CreateANewArticleCommand } from '@app/command/articles/create-a-new-article/create-a-new-article.command';
-import {CommandHandler, EventPublisher, ICommandHandler} from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { ArticleInterface } from '@domain/articles/article.interface';
 import { Inject } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs/dist/aggregate-root';
