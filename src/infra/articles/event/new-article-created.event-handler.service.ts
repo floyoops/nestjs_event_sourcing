@@ -8,7 +8,7 @@ export class NewArticleCreatedEventHandlerService
   implements IEventHandler<NewArticleCreatedEvent>
 {
   public handle(event: NewArticleCreatedEvent): Promise<boolean> {
-    console.log('bbbbbbbbbbbbbbbbbbbbbbb');
+    console.log('NewArticleCreatedEventHandlerService ' + event.uuid);
     return super.handle(event);
   }
 }

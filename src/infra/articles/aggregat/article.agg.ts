@@ -13,10 +13,8 @@ export class ArticleAgg extends AggregateRoot implements ArticleInterface {
   }
 
   create(title: string, content: string) {
-    this.apply(new NewArticleCreatedEvent(this.uuid, this.title, this.content));
-  }
-
-  onNewArticleCreatedEvent(event: NewArticleCreatedEvent) {
-    console.log('ccccccccccccccc' + event.uuid);
+    this.title = title;
+    this.content = content;
+    this.apply(new NewArticleCreatedEvent(this.id, title, content));
   }
 }

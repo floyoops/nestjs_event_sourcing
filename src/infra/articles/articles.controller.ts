@@ -1,7 +1,8 @@
-import { Controller, Get, Inject, InternalServerErrorException, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Inject, InternalServerErrorException, Post, Put } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateANewArticleCommand } from '@app/command/articles/create-a-new-article/create-a-new-article.command';
+import { CreateArticleDto } from '@infra/articles/dto/create-article.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -18,15 +19,16 @@ export class ArticlesController {
   }
 
   @Post()
-  public async createArticle(): Promise<string> {
+  public async createArticle(@Body() createDto: CreateArticleDto): Promise<string> {
     let response = '';
-    const command = new CreateANewArticleCommand(uuidv4(), 'My title test', 'My test content');
     try {
-      response = await this.commandBus.execute(command);
+      response = await this.commandBus.execute(
+        new CreateANewArticleCommand(uuidv4(), createDto.title, createDto.content),
+      );
     } catch (err) {
-      throw new InternalServerErrorException('An error has occurred when the create article');
+      throw new InternalServerErrorException('An error has occurred on create article');
     }
-    return Promise.resolve(response);
+    return response;
   }
 
   @Put(':uuid')

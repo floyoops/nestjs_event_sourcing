@@ -27,7 +27,8 @@ describe('articles', () => {
   });
 
   it('post article', async () => {
-    const response = await request(app.getHttpServer()).post('/articles').expect(201);
+    const payload = { title: 'my title', content: 'my content of article' };
+    const response = await request(app.getHttpServer()).post('/articles').send(payload).expect(201);
 
     expect(response.text).toContain('-'); // Check uuid response.
   });

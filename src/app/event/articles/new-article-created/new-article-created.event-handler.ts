@@ -3,7 +3,7 @@ import { NewArticleCreatedEvent } from '@app/event/articles/new-article-created/
 
 export class NewArticleCreatedEventHandler implements EventHandlerInterface {
   public handle(event: NewArticleCreatedEvent): Promise<boolean> {
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    console.log('NewArticleCreatedEventHandler ' + event.uuid);
     return Promise.resolve(true);
   }
 }
