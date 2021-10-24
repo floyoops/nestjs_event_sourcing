@@ -24,7 +24,7 @@ export class ArticlesController {
     try {
       response = await this.commandBus.execute(command);
     } catch (err) {
-      throw new InternalServerErrorException('An error has occurend when the create article');
+      throw new InternalServerErrorException('An error has occurred when the create article');
     }
     return Promise.resolve(response);
   }
