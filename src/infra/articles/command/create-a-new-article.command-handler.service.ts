@@ -8,7 +8,10 @@ import { IConstructorInterface } from '@domain/shared/type';
 import { DiTokens } from '@infra/common/di-tokens';
 
 @CommandHandler(CreateANewArticleCommand)
-export class CreateANewArticleCommandHandlerService extends CreateANewArticleCommandHandler implements ICommandHandler {
+export class CreateANewArticleCommandHandlerService
+  extends CreateANewArticleCommandHandler
+  implements ICommandHandler<CreateANewArticleCommand>
+{
   constructor(
     @Inject(DiTokens.ArticleConstructor) articleConstructor: IConstructorInterface<ArticleInterface & AggregateRoot>,
   ) {

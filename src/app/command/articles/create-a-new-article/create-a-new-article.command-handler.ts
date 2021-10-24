@@ -6,17 +6,18 @@ import { IConstructorInterface } from '@domain/shared/type';
 export class CreateANewArticleCommandHandler implements CommandHandlerInterface {
   constructor(private readonly articleConstructor: IConstructorInterface<ArticleInterface>) {}
 
-  public handle(command: CreateANewArticleCommand): Promise<string> {
+  public async handle(command: CreateANewArticleCommand): Promise<string> {
     let article: ArticleInterface = undefined;
 
     try {
       article = new this.articleConstructor(command.newArticleUuid);
-      article.title = command.title;
-      article.content = command.content;
+      article.create(command.title, command.content);
     } catch (e) {
       console.error(e);
     }
-
-    return Promise.resolve(article.uuid);
+    article.commit();
+    return await new Promise(resolve => {
+      setTimeout(() => resolve(article.uuid), 1000);
+    });
   }
 }
