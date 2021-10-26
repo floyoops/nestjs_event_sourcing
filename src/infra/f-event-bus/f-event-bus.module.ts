@@ -15,6 +15,6 @@ const FEventPublisherProvider: FactoryProvider = {
 @Module({
   imports: [CqrsModule],
   providers: [MemoryStore, FEventBus, FEventPublisherProvider],
-  exports: [FEventPublisherProvider],
+  exports: [FEventPublisherProvider, MemoryStore],
 })
 export class FEventBusModule {}

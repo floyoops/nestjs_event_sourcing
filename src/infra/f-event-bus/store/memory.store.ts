@@ -10,6 +10,7 @@ export interface FMessageInterface {
 export interface FStoreInterface {
   save(event: IEvent, aggregateId: number): Promise<void>;
   findByAggregateId(id: number): IEvent[];
+  findAll(): IEvent[];
 }
 
 @Injectable()
@@ -24,5 +25,9 @@ export class MemoryStore implements FStoreInterface {
 
   public findByAggregateId(id: number): IEvent[] {
     return this._store.filter(message => message.aggregateId === id).map(message => message.payload);
+  }
+
+  public findAll(): IEvent[] {
+    return this._store.map(message => message.payload);
   }
 }
