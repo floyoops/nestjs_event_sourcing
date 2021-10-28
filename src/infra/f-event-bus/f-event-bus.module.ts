@@ -2,7 +2,7 @@ import { DiTokens } from '@infra/common/di-tokens';
 import { FactoryProvider, Module } from '@nestjs/common';
 import { CqrsModule, EventBus, EventPublisher } from '@nestjs/cqrs';
 import { FEventBus } from './f-event-bus';
-import {MemoryStore} from "@infra/f-event-bus/store/memory.store";
+import { MemoryStore } from '@infra/f-event-bus/store/memory.store';
 
 const FEventPublisherProvider: FactoryProvider = {
   provide: DiTokens.FEventBusPublisher,

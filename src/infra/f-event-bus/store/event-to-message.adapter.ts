@@ -1,8 +1,8 @@
-import { IEvent } from '@nestjs/cqrs';
-import { FMessageInterface } from '@infra/f-event-bus/store/memory.store';
+import { FEvent, FMessageInterface } from '@infra/f-event-bus/type/f.type';
+import { NameEvent } from '@domain/shared/type';
 
 export class EventToMessageAdapter {
-  public static toMessage(event: IEvent, aggregateId: number): FMessageInterface {
-    return { aggregateId, payload: event };
+  public static toMessage(event: FEvent, name: NameEvent): FMessageInterface {
+    return { aggregateId: event.aggregateId, name, payload: event };
   }
 }

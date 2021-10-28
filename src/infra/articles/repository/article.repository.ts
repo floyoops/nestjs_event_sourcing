@@ -2,8 +2,9 @@ import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
 import { IConstructorInterface } from '@domain/shared/type';
 import { Inject, Injectable } from '@nestjs/common';
 import { DiTokens } from '@infra/common/di-tokens';
-import { FStoreInterface, MemoryStore } from '@infra/f-event-bus/store/memory.store';
 import { groupBy, map } from 'lodash';
+import { MemoryStore } from '@infra/f-event-bus/store/memory.store';
+import { FStoreInterface } from '@infra/f-event-bus/type/f.type';
 
 @Injectable()
 export class ArticleRepository {
@@ -14,15 +15,15 @@ export class ArticleRepository {
 
   public findAll(): Promise<ArticleAgg[]> {
     const events = this.store.findAll();
-    const eventsGrouped = groupBy(events, 'id');
+    const eventsGrouped = groupBy(events, 'aggregateId');
     const eventsGrouped2 = map(eventsGrouped);
-    // return eventsGrouped2.map(events => {
-    //   const aggregate = new this.articleConstructor();
-    //   aggregate.loadFromHistory(events);
-    //   return aggregate;
-    // })
 
+    const b = eventsGrouped2.map(events2 => {
+      const aggregate = new this.articleConstructor();
+      aggregate.loadFromHistory(events2);
+      return aggregate;
+    });
 
-    return Promise.resolve([]);
+    return Promise.resolve(b);
   }
 }
