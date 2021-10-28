@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ArticleInterface } from '@domain/articles/article.interface';
-import { NewArticleCreatedEvent } from '@app/event/articles/new-article-created/new-article-created.event';
+import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
 
 export class ArticleAgg extends AggregateRoot implements ArticleInterface {
   public content: string;
@@ -13,8 +13,12 @@ export class ArticleAgg extends AggregateRoot implements ArticleInterface {
   }
 
   create(title: string, content: string) {
-    this.title = title;
-    this.content = content;
-    this.apply(new NewArticleCreatedEvent(this.id, title, content));
+    this.apply(new NewArticleCreated(this.id, { uuid: this.uuid, title, content }));
+  }
+
+  onNewArticleCreated(event: NewArticleCreated) {
+    this.uuid = event.data.uuid;
+    this.title = event.data.title;
+    this.content = event.data.content;
   }
 }

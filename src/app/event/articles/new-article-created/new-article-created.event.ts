@@ -1,11 +1,14 @@
-import { EventInterface } from '@domain/shared/bus/event.interface';
 import { AggregateId } from '@domain/shared/type';
+import { DomainEvent } from '@domain/shared/bus/domain.event';
 
-export class NewArticleCreatedEvent implements EventInterface {
-  constructor(public readonly uuid: string, public readonly title: string, public readonly content: string) {
-    this.aggregateId = uuid;
+interface NewArticleCreatedData {
+  uuid: string;
+  title: string;
+  content: string;
+}
+
+export class NewArticleCreated extends DomainEvent<NewArticleCreatedData> {
+  constructor(aggregateId: AggregateId, data: NewArticleCreatedData) {
+    super(aggregateId, 'NewArticleCreatedEvent', new Date(), 1, data);
   }
-
-  public readonly version = 1;
-  public readonly aggregateId: AggregateId;
 }

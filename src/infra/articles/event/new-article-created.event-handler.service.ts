@@ -1,14 +1,14 @@
 import { NewArticleCreatedEventHandler } from '@app/event/articles/new-article-created/new-article-created.event-handler';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { NewArticleCreatedEvent } from '@app/event/articles/new-article-created/new-article-created.event';
+import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
 
-@EventsHandler(NewArticleCreatedEvent)
+@EventsHandler(NewArticleCreated)
 export class NewArticleCreatedEventHandlerService
   extends NewArticleCreatedEventHandler
-  implements IEventHandler<NewArticleCreatedEvent>
+  implements IEventHandler<NewArticleCreated>
 {
-  public handle(event: NewArticleCreatedEvent): Promise<boolean> {
-    console.log('NewArticleCreatedEventHandlerService ' + event.uuid);
+  public handle(event: NewArticleCreated): Promise<boolean> {
+    console.log('NewArticleCreatedEventHandlerService ' + event.data.uuid);
     return super.handle(event);
   }
 }

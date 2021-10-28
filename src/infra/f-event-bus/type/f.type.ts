@@ -1,8 +1,8 @@
 import { IEvent } from '@nestjs/cqrs';
 import { AggregateId, NameEvent } from '@domain/shared/type';
-import { EventInterface } from '@domain/shared/bus/event.interface';
+import { DomainEvent } from '@domain/shared/bus/event.interface';
 
-export type FEvent = EventInterface & IEvent;
+export type FEvent = DomainEvent & IEvent;
 
 export interface FMessageInterface {
   aggregateId: AggregateId;

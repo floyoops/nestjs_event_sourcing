@@ -17,4 +17,6 @@ const FEventPublisherProvider: FactoryProvider = {
   providers: [MemoryStore, FEventBus, FEventPublisherProvider],
   exports: [FEventPublisherProvider, MemoryStore],
 })
+
+// TODO replace publisher of eventBus with FEventStorePublisher.
 export class FEventBusModule {}

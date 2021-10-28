@@ -1,15 +1,15 @@
 import { MemoryStore } from '@infra/f-event-bus/store/memory.store';
 import { ArticleRepository } from '@infra/articles/repository/article.repository';
 import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
-import { NewArticleCreatedEvent } from '@app/event/articles/new-article-created/new-article-created.event';
+import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
 
 describe('article repository', () => {
   it('success', () => {
     const store = new MemoryStore();
-    const events: NewArticleCreatedEvent[] = [
-      new NewArticleCreatedEvent('aaaa', 'title of aaaa', 'content of aaa'),
-      new NewArticleCreatedEvent('bbbb', 'title of bbbb', 'content of bbbb'),
-      new NewArticleCreatedEvent('cccc', 'title of cccc', 'content of cccc'),
+    const events: NewArticleCreated[] = [
+      new NewArticleCreated('aaaa', { uuid: 'aaaa', title: 'title of aaaa', content: 'content of aaaa' }),
+      new NewArticleCreated('bbbb', { uuid: 'bbbb', title: 'title of bbbb', content: 'content of bbbb' }),
+      new NewArticleCreated('cccc', { uuid: 'cccc', title: 'title of cccc', content: 'content of cccc' }),
     ];
 
     events.map(event => store.save(event));

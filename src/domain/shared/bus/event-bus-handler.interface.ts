@@ -1,5 +1,5 @@
-import { EventInterface } from './event.interface';
+import { DomainEvent } from './event.interface';
 
 export interface EventBusHandlerInterface {
-  handle(event: EventInterface): Promise<any>;
+  handle(event: DomainEvent): Promise<any>;
 }
