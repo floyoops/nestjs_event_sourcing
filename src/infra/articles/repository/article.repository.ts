@@ -3,8 +3,8 @@ import { IConstructorInterface } from '@domain/shared/type';
 import { Inject, Injectable } from '@nestjs/common';
 import { DiTokens } from '@infra/common/di-tokens';
 import { groupBy, map } from 'lodash';
-import { MemoryStore } from '@infra/f-event-bus/store/memory.store';
-import { FStoreInterface } from '@infra/f-event-bus/type/f.type';
+import { MemoryStore } from '@infra/f-event-sourcing/store/memory.store';
+import { FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
 
 @Injectable()
 export class ArticleRepository {

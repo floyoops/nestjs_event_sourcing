@@ -1,4 +1,4 @@
-import { FStoreInterface } from '@infra/f-event-bus/type/f.type';
+import { FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
 import { Injectable } from '@nestjs/common';
 import { AggregateId } from '@domain/shared/type';
 import { DomainEvent } from '@domain/shared/bus/domain.event';

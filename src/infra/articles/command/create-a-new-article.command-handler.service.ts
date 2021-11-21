@@ -14,7 +14,7 @@ export class CreateANewArticleCommandHandlerService
 {
   constructor(
     @Inject(DiTokens.ArticleConstructor) articleConstructor: IConstructorInterface<ArticleInterface & AggregateRoot>,
-    @Inject(DiTokens.FEventBusPublisher) publisher: EventPublisher,
+    @Inject(EventPublisher) publisher: EventPublisher,
   ) {
     super(articleConstructor, publisher);
   }

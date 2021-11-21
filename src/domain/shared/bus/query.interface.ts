@@ -1,1 +1,3 @@
-export interface QueryInterface {}
+export interface QueryInterface {
+  readonly version: number;
+}

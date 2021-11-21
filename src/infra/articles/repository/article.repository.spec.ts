@@ -1,4 +1,4 @@
-import { MemoryStore } from '@infra/f-event-bus/store/memory.store';
+import { MemoryStore } from '@infra/f-event-sourcing/store/memory.store';
 import { ArticleRepository } from '@infra/articles/repository/article.repository';
 import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
 import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
