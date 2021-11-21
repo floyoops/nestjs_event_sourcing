@@ -4,7 +4,7 @@ import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
 import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
 
 describe('article repository', () => {
-  it('success', () => {
+  it('success', async () => {
     const store = new MemoryStore();
     const events: NewArticleCreated[] = [
       new NewArticleCreated('aaaa', { uuid: 'aaaa', title: 'title of aaaa', content: 'content of aaaa' }),
@@ -12,8 +12,10 @@ describe('article repository', () => {
       new NewArticleCreated('cccc', { uuid: 'cccc', title: 'title of cccc', content: 'content of cccc' }),
     ];
 
-    events.map(event => store.save(event));
+    await Promise.all(events.map(event => store.save(event)));
     const articleRepository = new ArticleRepository(ArticleAgg, store);
-    const articles = articleRepository.findAll();
+    const articles = await articleRepository.findAll();
+    expect(articles.length).toEqual(3);
+    expect(articles[2].content).toEqual('content of cccc');
   });
 });
