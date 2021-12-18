@@ -1,8 +1,8 @@
-import { AggregateId } from '@domain/shared/type';
+import { AggregateId, Uuid } from '@domain/shared/type';
 import { DomainEvent } from '@domain/shared/bus/domain.event';
 
 interface NewArticleCreatedData {
-  uuid: string;
+  uuid: Uuid;
   title: string;
   content: string;
 }

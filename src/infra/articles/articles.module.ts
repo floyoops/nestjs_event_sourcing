@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ArticlesCommandHandlers } from './command';
 import { ArticleAggregateConstructorFactoryProvider } from '@infra/articles/article.factory-provider';
 import { ArticlesEventHandlers } from '@infra/articles/event';
@@ -9,6 +9,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 @Module({
   imports: [FEventSourcingModule, CqrsModule],
   providers: [
+    Logger,
     ArticleAggregateConstructorFactoryProvider,
     ArticleRepository,
     ...ArticlesCommandHandlers,

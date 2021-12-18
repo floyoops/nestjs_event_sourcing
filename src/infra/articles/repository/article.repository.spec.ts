@@ -2,6 +2,7 @@ import { MemoryStore } from '@infra/f-event-sourcing/store/memory.store';
 import { ArticleRepository } from '@infra/articles/repository/article.repository';
 import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
 import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
+import { MyLoggerMock } from '@infra/my-logger/my-logger.mock';
 
 describe('article repository', () => {
   it('success', async () => {
@@ -13,7 +14,7 @@ describe('article repository', () => {
     ];
 
     await Promise.all(events.map(event => store.save(event)));
-    const articleRepository = new ArticleRepository(ArticleAgg, store);
+    const articleRepository = new ArticleRepository(ArticleAgg, store, new MyLoggerMock());
     const articles = await articleRepository.findAll();
     expect(articles.length).toEqual(3);
     expect(articles[2].content).toEqual('content of cccc');
