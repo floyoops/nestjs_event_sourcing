@@ -1,13 +1,13 @@
 import { EventBus, IEventPublisher } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
-import { MemoryStore } from '@infra/f-event-sourcing/store/memory.store';
 import { FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
+import {PrismaStore} from "@infra/f-event-sourcing/store/prisma.store";
 
 @Injectable()
 export class FEventStorePublisher implements IEventPublisher {
   constructor(
     @Inject(EventBus) private readonly eventBus: EventBus,
-    @Inject(MemoryStore) private readonly store: FStoreInterface,
+    @Inject(PrismaStore) private readonly store: FStoreInterface,
   ) {}
 
   publish(event) {

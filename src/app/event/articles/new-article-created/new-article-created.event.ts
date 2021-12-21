@@ -1,7 +1,7 @@
 import { AggregateId, Uuid } from '@domain/shared/type';
 import { DomainEvent } from '@domain/shared/bus/domain.event';
 
-interface NewArticleCreatedData {
+export interface NewArticleCreatedData {
   uuid: Uuid;
   title: string;
   content: string;

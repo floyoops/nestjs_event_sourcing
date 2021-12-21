@@ -1,4 +1,4 @@
-import { FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
+import {FEvent, FStoreInterface} from '@infra/f-event-sourcing/type/f.type';
 import { Injectable } from '@nestjs/common';
 import { AggregateId } from '@domain/shared/type';
 import { DomainEvent } from '@domain/shared/bus/domain.event';
@@ -12,11 +12,7 @@ export class MemoryStore implements FStoreInterface {
     return Promise.resolve();
   }
 
-  public findByAggregateId(id: AggregateId): DomainEvent[] {
-    return this._store.filter(message => message.aggregateId === id);
-  }
-
-  public findAll(): DomainEvent[] {
-    return this._store;
+  public findByAggregateId(id: AggregateId): Promise<FEvent[]> {
+    return Promise.resolve(this._store.filter(message => message.aggregateId === id));
   }
 }

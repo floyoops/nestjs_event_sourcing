@@ -5,9 +5,10 @@ import { ArticlesEventHandlers } from '@infra/articles/event';
 import { FEventSourcingModule } from '@infra/f-event-sourcing/f-event-sourcing.module';
 import { ArticleRepository } from '@infra/articles/repository/article.repository';
 import { CqrsModule } from '@nestjs/cqrs';
+import {PrismaModule} from "@infra/prisma/prisma.module";
 
 @Module({
-  imports: [FEventSourcingModule, CqrsModule],
+  imports: [FEventSourcingModule, CqrsModule, PrismaModule],
   providers: [
     Logger,
     ArticleAggregateConstructorFactoryProvider,
