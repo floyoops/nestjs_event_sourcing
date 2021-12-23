@@ -1,34 +1,45 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UiModule } from '@ui/ui.module';
 import { MyLoggerMock } from '@infra/my-logger/my-logger.mock';
+import { MyTestModule } from '@test/util/my-test.module';
+import { FixtureService } from '@infra/fixture/fixture.service';
+import { PrismaService } from '@infra/prisma/prisma.service';
 
 describe('articles', () => {
   const articleUuid = '95521d6d-f0dc-468e-800c-7ee6c95d0c18';
   let app: INestApplication;
+  let fixture: FixtureService;
   const loggerMock = new MyLoggerMock();
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UiModule],
+      imports: [MyTestModule],
     })
       .setLogger(loggerMock)
       .compile();
 
     app = moduleFixture.createNestApplication();
+    fixture = moduleFixture.get(FixtureService);
+    const prisma = moduleFixture.get(PrismaService);
+    await prisma.event.deleteMany({});
     await app.init();
     loggerMock.reset();
   });
 
   it('list articles', async () => {
-    await request(app.getHttpServer()).get('/articles').expect(200);
+    await fixture.loadAnArticle('831af673-a758-4963-8bfb-6b58c20fd774');
+    const result = await request(app.getHttpServer()).get('/articles').expect(200);
+    expect(result).not.toBeNull();
   });
 
   it('get one article', async () => {
-    await request(app.getHttpServer())
-      .get('/articles/' + articleUuid)
-      .expect(200);
+    const articleUuid = '831af673-a758-4963-8bfb-6b58c20fd774';
+    await fixture.loadAnArticle(articleUuid);
+    const response = await request(app.getHttpServer()).get('/articles/' + articleUuid);
+    expect(response.status).toEqual(200);
+    expect(response.body.uuid).toEqual(articleUuid);
+    expect(response.body.title).not.toBeNull();
   });
 
   it('post article', async () => {

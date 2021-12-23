@@ -1,21 +1,26 @@
-import { Body, Controller, Get, Inject, InternalServerErrorException, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Inject, InternalServerErrorException, Param, Post, Put } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, IQueryBus, QueryBus } from '@nestjs/cqrs';
 import { CreateANewArticleCommand } from '@app/command/articles/create-a-new-article/create-a-new-article.command';
 import { CreateArticleDto } from '@ui/rest/articles/dto/create-article.dto';
+import { ListArticlesQuery } from '@app/query/list-articles/list-articles.query';
+import { GetAnArticleQuery } from '@app/query/get-an-article/get-an-article.query';
 
 @Controller('articles')
 export class ArticlesController {
-  constructor(@Inject(CommandBus) private readonly commandBus: CommandBus) {}
+  constructor(
+    @Inject(QueryBus) private readonly queryBus: IQueryBus,
+    @Inject(CommandBus) private readonly commandBus: CommandBus,
+  ) {}
 
   @Get()
   public listArticles(): Promise<string[]> {
-    return Promise.resolve([]);
+    return this.queryBus.execute(new ListArticlesQuery());
   }
 
   @Get(':uuid')
-  public getArticle(): Promise<string> {
-    return Promise.resolve('aaaa');
+  public getArticle(@Param() params): Promise<string> {
+    return this.queryBus.execute(new GetAnArticleQuery(params.uuid));
   }
 
   @Post()

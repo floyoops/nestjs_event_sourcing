@@ -5,7 +5,8 @@ import { ArticlesEventHandlers } from '@infra/articles/event';
 import { FEventSourcingModule } from '@infra/f-event-sourcing/f-event-sourcing.module';
 import { ArticleRepository } from '@infra/articles/repository/article.repository';
 import { CqrsModule } from '@nestjs/cqrs';
-import {PrismaModule} from "@infra/prisma/prisma.module";
+import { PrismaModule } from '@infra/prisma/prisma.module';
+import { ArticleQueryHandlers } from '@infra/articles/query';
 
 @Module({
   imports: [FEventSourcingModule, CqrsModule, PrismaModule],
@@ -15,6 +16,7 @@ import {PrismaModule} from "@infra/prisma/prisma.module";
     ArticleRepository,
     ...ArticlesCommandHandlers,
     ...ArticlesEventHandlers,
+    ...ArticleQueryHandlers,
   ],
 })
 export class ArticlesModule {}

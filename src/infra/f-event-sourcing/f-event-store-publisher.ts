@@ -1,7 +1,7 @@
 import { EventBus, IEventPublisher } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
 import { FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
-import {PrismaStore} from "@infra/f-event-sourcing/store/prisma.store";
+import { PrismaStore } from '@infra/f-event-sourcing/store/prisma.store';
 
 @Injectable()
 export class FEventStorePublisher implements IEventPublisher {
