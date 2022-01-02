@@ -2,7 +2,7 @@ import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
 import { IConstructorInterface } from '@domain/shared/type';
 import { Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
 import { DiTokens } from '@infra/common/di-tokens';
-import { FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
+import { FEvent, FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
 import { PrismaStore } from '@infra/f-event-sourcing/store/prisma.store';
 import { ArticleRepositoryInterface } from '@domain/articles/article.repository.interface';
 import { ArticleInterface } from '@domain/articles/article.interface';
@@ -15,26 +15,30 @@ export class ArticleRepository implements ArticleRepositoryInterface {
     @Inject(Logger) public readonly logger: LoggerService,
   ) {}
 
-  public findAll(): Promise<ArticleInterface[]> {
-    // const events = this.store.findAll();
-    // const eventsGrouped = groupBy(events, 'aggregateId');
-    // const eventsGrouped2 = map(eventsGrouped);
-    //
-    // const b = eventsGrouped2.map(events2 => {
-    //   type EventWithAggregateId = IEvent & { aggregateId: AggregateId };
-    //   const events3 = events2.filter(event2 => event2.hasOwnProperty('aggregateId')) as EventWithAggregateId[];
-    //   const aggregateId = events3?.[0].aggregateId;
-    //   const aggregate = new this.articleConstructor(aggregateId, this.logger);
-    //   aggregate.loadFromHistory(events2);
-    //   return aggregate;
-    // });
-    //
-    // return Promise.resolve(b);
-    return Promise.resolve([]);
+  public async findAll<TData = unknown>(): Promise<ArticleInterface[]> {
+    const events = await this.store.findAll();
+
+    // Group events by aggregateId.
+    const eventsCollections = events.reduce((collections, event) => {
+      const id = event.aggregateId;
+      const collection = collections[id] || [];
+      collection.push(event);
+      collections[id] = collection;
+      return collections;
+    }, {});
+
+    return Object.values(eventsCollections).map((events: FEvent[]) => {
+      const articleUuid = events[0].aggregateId;
+      return this.loadArticle(articleUuid, events);
+    });
   }
 
   public async findOne(articleUuid: string): Promise<ArticleInterface> {
     const events = await this.store.findByAggregateId(articleUuid);
+    return this.loadArticle(articleUuid, events);
+  }
+
+  protected loadArticle(articleUuid: string, events: FEvent[]): ArticleAgg {
     const articleAgg = new this.articleConstructor(articleUuid, this.logger);
     articleAgg.loadFromHistory(events);
     return articleAgg;

@@ -7,6 +7,7 @@ export type FEvent<TData = unknown> = IEvent & DomainEvent<TData>;
 export interface FStoreInterface {
   save(event: IEvent): Promise<void>;
   findByAggregateId(id: AggregateId): Promise<FEvent[]>;
+  findAll(): Promise<FEvent[]>;
 }
 
 export interface DataTransformer<T1, T2> {

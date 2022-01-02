@@ -15,4 +15,8 @@ export class MemoryStore implements FStoreInterface {
   public findByAggregateId(id: AggregateId): Promise<FEvent[]> {
     return Promise.resolve(this._store.filter(message => message.aggregateId === id));
   }
+
+  findAll(): Promise<FEvent[]> {
+    return Promise.resolve([]);
+  }
 }

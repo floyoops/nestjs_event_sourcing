@@ -28,9 +28,18 @@ describe('articles', () => {
   });
 
   it('list articles', async () => {
-    await fixture.loadAnArticle('831af673-a758-4963-8bfb-6b58c20fd774');
+    const loadArticles = [
+      '831af673-a758-4963-8bfb-6b58c20fd774',
+      'b3318b5f-387d-4fb4-ae8d-daa7221762c6',
+      '7d38efe7-cb76-4329-8098-b9f8482bb299',
+    ].map(articleUuid => fixture.loadAnArticle(articleUuid));
+    await Promise.all(loadArticles);
     const result = await request(app.getHttpServer()).get('/articles').expect(200);
     expect(result).not.toBeNull();
+    expect(result.body[0].title).not.toBeUndefined();
+    expect(result.body[1].title).not.toBeUndefined();
+    expect(result.body[2].title).not.toBeUndefined();
+    expect(result.body[3]).toBeUndefined();
   });
 
   it('get one article', async () => {
@@ -39,6 +48,7 @@ describe('articles', () => {
     const response = await request(app.getHttpServer()).get('/articles/' + articleUuid);
     expect(response.status).toEqual(200);
     expect(response.body.uuid).toEqual(articleUuid);
+    expect(response.body.title).not.toBeUndefined();
     expect(response.body.title).not.toBeNull();
   });
 

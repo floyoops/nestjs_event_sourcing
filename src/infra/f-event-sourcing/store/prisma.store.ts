@@ -21,6 +21,11 @@ export class PrismaStore implements FStoreInterface {
     return eventsModel.map(event => this.prismaEventTransformer.transform<TData>(event));
   }
 
+  async findAll<TData = unknown>(): Promise<FEvent[]> {
+    const eventsModel = await this.prisma.event.findMany();
+    return eventsModel.map(event => this.prismaEventTransformer.transform<TData>(event));
+  }
+
   async save(event: FEvent): Promise<void> {
     await this.prisma.event.create({
       data: this.prismaEventTransformer.reverseTransform(event),

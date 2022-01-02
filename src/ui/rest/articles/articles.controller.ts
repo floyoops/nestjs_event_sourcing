@@ -36,6 +36,7 @@ export class ArticlesController {
     return response;
   }
 
+  // TODO update !
   @Put(':uuid')
   public updateArticle(): Promise<boolean> {
     return Promise.resolve(true);

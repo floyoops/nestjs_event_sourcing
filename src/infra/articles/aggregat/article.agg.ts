@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { ArticleInterface } from '@domain/articles/article.interface';
 import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
 import { LoggerService } from '@nestjs/common';
+import { DomainEvent } from '@domain/shared/bus/domain.event';
 
 export class ArticleAgg extends AggregateRoot implements ArticleInterface {
   public content: string;
@@ -23,5 +24,10 @@ export class ArticleAgg extends AggregateRoot implements ArticleInterface {
     this.uuid = event.data.uuid;
     this.title = event.data.title;
     this.content = event.data.content;
+  }
+
+  protected getEventName(event: DomainEvent): string {
+    if (!event.eventType) return super.getEventName(event);
+    return event.eventType;
   }
 }

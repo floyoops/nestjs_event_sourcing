@@ -9,6 +9,6 @@ export interface NewArticleCreatedData {
 
 export class NewArticleCreated extends DomainEvent<NewArticleCreatedData> {
   constructor(aggregateId: AggregateId, data: NewArticleCreatedData) {
-    super(aggregateId, 'NewArticleCreatedEvent', new Date(), 1, data);
+    super(aggregateId, 'NewArticleCreated', new Date(), 1, data);
   }
 }
