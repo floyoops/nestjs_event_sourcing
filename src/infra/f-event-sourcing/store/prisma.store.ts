@@ -2,11 +2,14 @@ import { FEvent, FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { AggregateId } from '@domain/shared/type';
-import { NewArticleCreated } from '@app/event/articles/new-article-created/new-article-created.event';
+import { PrismaEventTransformer } from '@infra/f-event-sourcing/store/prisma-event.transformer';
 
 @Injectable()
 export class PrismaStore implements FStoreInterface {
-  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: PrismaService,
+    @Inject(PrismaEventTransformer) private readonly prismaEventTransformer: PrismaEventTransformer,
+  ) {}
 
   async findByAggregateId<TData = unknown>(id: AggregateId): Promise<FEvent[]> {
     const eventsModel = await this.prisma.event.findMany({
@@ -15,25 +18,12 @@ export class PrismaStore implements FStoreInterface {
       },
     });
 
-    // Adapt model prisma to domainEvent.
-    return eventsModel.map(eventModel => {
-      const objData = JSON.parse(eventModel.data);
-      return new NewArticleCreated(eventModel.streamId, {
-        content: objData?.content || '',
-        title: objData.title || '',
-        uuid: objData?.uuid || '',
-      });
-    });
+    return eventsModel.map(event => this.prismaEventTransformer.transform<TData>(event));
   }
 
   async save(event: FEvent): Promise<void> {
     await this.prisma.event.create({
-      data: {
-        streamId: event.aggregateId.toString(),
-        data: JSON.stringify(event.data),
-        eventType: event.eventType,
-        version: event.version,
-      },
+      data: this.prismaEventTransformer.reverseTransform(event),
     });
 
     return;

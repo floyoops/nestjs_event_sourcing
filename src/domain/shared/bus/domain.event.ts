@@ -7,6 +7,6 @@ export abstract class DomainEvent<TData = unknown> implements IEvent {
     public readonly eventType: EventType,
     public readonly createdAt: Date,
     public readonly version: EventVersion,
-    public readonly data: TData,
+    public data: TData,
   ) {}
 }
