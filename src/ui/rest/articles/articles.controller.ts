@@ -5,6 +5,8 @@ import { CreateANewArticleCommand } from '@app/command/articles/create-a-new-art
 import { CreateArticleDto } from '@ui/rest/articles/dto/create-article.dto';
 import { ListArticlesQuery } from '@app/query/list-articles/list-articles.query';
 import { GetAnArticleQuery } from '@app/query/get-an-article/get-an-article.query';
+import { UpdateAnArticleCommand } from '@app/command/articles/update-an-article/update-an-article.command';
+import { UpdateArticleDto } from '@ui/rest/articles/dto/update-article.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -36,9 +38,13 @@ export class ArticlesController {
     return response;
   }
 
-  // TODO update !
   @Put(':uuid')
-  public updateArticle(): Promise<boolean> {
-    return Promise.resolve(true);
+  public async updateArticle(@Param() params, @Body() updateDto: UpdateArticleDto): Promise<boolean> {
+    try {
+      await this.commandBus.execute(new UpdateAnArticleCommand(params.uuid, updateDto.title, updateDto.content));
+    } catch (err) {
+      throw new InternalServerErrorException('An error has occurred on update article');
+    }
+    return true;
   }
 }

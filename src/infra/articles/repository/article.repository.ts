@@ -6,14 +6,20 @@ import { FEvent, FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
 import { PrismaStore } from '@infra/f-event-sourcing/store/prisma.store';
 import { ArticleRepositoryInterface } from '@domain/articles/article.repository.interface';
 import { ArticleInterface } from '@domain/articles/article.interface';
+import { Constructor, EventPublisher } from '@nestjs/cqrs';
 
 @Injectable()
 export class ArticleRepository implements ArticleRepositoryInterface {
+  private readonly article: Constructor<ArticleAgg>;
+
   constructor(
     @Inject(DiTokens.ArticleConstructor) private readonly articleConstructor: IConstructorInterface<ArticleAgg>,
     @Inject(PrismaStore) private readonly store: FStoreInterface,
+    @Inject(EventPublisher) private readonly publisher: EventPublisher,
     @Inject(Logger) public readonly logger: LoggerService,
-  ) {}
+  ) {
+    this.article = this.publisher.mergeClassContext(ArticleAgg);
+  }
 
   public async findAll<TData = unknown>(): Promise<ArticleInterface[]> {
     const events = await this.store.findAll();
@@ -39,7 +45,7 @@ export class ArticleRepository implements ArticleRepositoryInterface {
   }
 
   protected loadArticle(articleUuid: string, events: FEvent[]): ArticleAgg {
-    const articleAgg = new this.articleConstructor(articleUuid, this.logger);
+    const articleAgg = new this.article(articleUuid, this.logger);
     articleAgg.loadFromHistory(events);
     return articleAgg;
   }

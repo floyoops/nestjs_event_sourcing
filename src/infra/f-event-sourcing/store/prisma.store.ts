@@ -16,13 +16,16 @@ export class PrismaStore implements FStoreInterface {
       where: {
         streamId: id,
       },
+      orderBy: [{ createdAt: 'asc' }],
     });
 
     return eventsModel.map(event => this.prismaEventTransformer.transform<TData>(event));
   }
 
   async findAll<TData = unknown>(): Promise<FEvent[]> {
-    const eventsModel = await this.prisma.event.findMany();
+    const eventsModel = await this.prisma.event.findMany({
+      orderBy: [{ createdAt: 'asc' }],
+    });
     return eventsModel.map(event => this.prismaEventTransformer.transform<TData>(event));
   }
 

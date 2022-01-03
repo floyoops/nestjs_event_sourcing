@@ -3,5 +3,6 @@ export interface ArticleInterface {
   title: string;
   content: string;
   create(title: string, content: string);
+  update(title: string, content: string);
   commit(): void;
 }

@@ -7,7 +7,6 @@ import { FixtureService } from '@infra/fixture/fixture.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 
 describe('articles', () => {
-  const articleUuid = '95521d6d-f0dc-468e-800c-7ee6c95d0c18';
   let app: INestApplication;
   let fixture: FixtureService;
   const loggerMock = new MyLoggerMock();
@@ -69,8 +68,24 @@ describe('articles', () => {
   });
 
   it('put article', async () => {
-    await request(app.getHttpServer())
+    const articleUuid = '831af673-a758-4963-8bfb-6b58c20fd774';
+    await fixture.loadAnArticle(articleUuid);
+
+    // First update
+    const payload = { title: 'my title 2', content: 'my content 2 of article' };
+    const response = await request(app.getHttpServer())
       .put('/articles/' + articleUuid)
-      .expect(200);
+      .send(payload);
+    expect(response.text).toEqual('true');
+
+    // Second update
+    const payload2 = { title: 'my title 3', content: 'my content 3 of article' };
+    const response2 = await request(app.getHttpServer())
+      .put('/articles/' + articleUuid)
+      .send(payload2);
+    expect(response2.text).toEqual('true');
+
+    const response3 = await request(app.getHttpServer()).get('/articles/' + articleUuid);
+    expect(response3.body.title).toEqual('my title 3');
   });
 });

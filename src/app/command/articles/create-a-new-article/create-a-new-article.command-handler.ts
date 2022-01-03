@@ -6,6 +6,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { AggregateRoot } from '@nestjs/cqrs/dist/aggregate-root';
 import { LoggerService } from '@nestjs/common';
 
+// TODO remove publisher (infra) for new instance by factory (domain).
 export class CreateANewArticleCommandHandler implements CommandHandlerInterface {
   constructor(
     private readonly articleConstructor: IConstructorInterface<ArticleInterface & AggregateRoot>,
