@@ -45,7 +45,7 @@ export class ArticleRepository implements ArticleRepositoryInterface {
   }
 
   protected loadArticle(articleUuid: string, events: FEvent[]): ArticleAgg {
-    const articleAgg = new this.article(articleUuid, this.logger);
+    const articleAgg = new this.article(articleUuid);
     articleAgg.loadFromHistory(events);
     return articleAgg;
   }

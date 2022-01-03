@@ -55,16 +55,6 @@ describe('articles', () => {
     const payload = { title: 'my title', content: 'my content of article' };
     const response = await request(app.getHttpServer()).post('/articles').send(payload).expect(201);
     expect(response.text).toContain('-'); // Check uuid response.
-
-    // check pass.
-    expect(loggerMock.logs[0]).toEqual('CreateANewArticleCommandHandler - handle title:"my title"');
-    expect(loggerMock.logs[1]).toEqual('ArticleAgg - create title:"my title" content:"my content of article"');
-    expect(loggerMock.logs[2]).toEqual(
-      'ArticleAgg - onNewArticleCreated title:"my title" content:"my content of article"',
-    );
-    expect(loggerMock.logs[3]).toEqual(
-      'NewArticleCreatedEventHandler - handle title:my title content:"my content of article"',
-    );
   });
 
   it('put article', async () => {

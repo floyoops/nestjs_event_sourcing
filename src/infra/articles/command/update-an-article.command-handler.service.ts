@@ -13,7 +13,7 @@ export class UpdateAnArticleCommandHandlerService
   constructor(@Inject(ArticleRepository) articleRepository: ArticleRepositoryInterface) {
     super(articleRepository);
   }
-  public execute(command: UpdateAnArticleCommand): Promise<void> {
+  public execute(command: UpdateAnArticleCommand) {
     return super.handle(command);
   }
 }

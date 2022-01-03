@@ -4,7 +4,6 @@ import { GetAnArticleQuery } from '@app/query/get-an-article/get-an-article.quer
 import { Inject } from '@nestjs/common';
 import { ArticleRepository } from '@infra/articles/repository/article.repository';
 import { ArticleRepositoryInterface } from '@domain/articles/article.repository.interface';
-import { ArticleInterface } from '@domain/articles/article.interface';
 
 @QueryHandler(GetAnArticleQuery)
 export class GetAnArticleQueryHandlerService extends GetAnArticleQueryHandler implements IQueryHandler {
@@ -12,7 +11,7 @@ export class GetAnArticleQueryHandlerService extends GetAnArticleQueryHandler im
     super(articleRepository);
   }
 
-  execute(query: GetAnArticleQuery): Promise<ArticleInterface> {
+  execute(query: GetAnArticleQuery) {
     return this.handle(query);
   }
 }
