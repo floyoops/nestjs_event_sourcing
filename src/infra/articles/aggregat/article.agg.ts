@@ -5,6 +5,7 @@ import { DomainEvent } from '@domain/shared/bus/domain.event';
 import { ArticleUpdated } from '@app/event/articles/article-updated/article-updated.event';
 import { ArticleLiked } from '@app/event/articles/article-liked/article-liked.event';
 
+// TODO remove business logic from infra.
 export class ArticleAgg extends AggregateRoot implements ArticleInterface {
   public content: string;
   public title: string;
