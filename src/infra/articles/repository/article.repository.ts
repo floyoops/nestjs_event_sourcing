@@ -1,25 +1,19 @@
 import { ArticleAgg } from '@infra/articles/aggregat/article.agg';
-import { IConstructorInterface } from '@domain/shared/type';
 import { Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
 import { DiTokens } from '@infra/common/di-tokens';
 import { FEvent, FStoreInterface } from '@infra/f-event-sourcing/type/f.type';
 import { PrismaStore } from '@infra/f-event-sourcing/store/prisma.store';
 import { ArticleRepositoryInterface } from '@domain/articles/article.repository.interface';
 import { ArticleInterface } from '@domain/articles/article.interface';
-import { Constructor, EventPublisher } from '@nestjs/cqrs';
+import { Constructor } from '@nestjs/cqrs';
 
 @Injectable()
 export class ArticleRepository implements ArticleRepositoryInterface {
-  private readonly article: Constructor<ArticleAgg>;
-
   constructor(
-    @Inject(DiTokens.ArticleConstructor) private readonly articleConstructor: IConstructorInterface<ArticleAgg>,
     @Inject(PrismaStore) private readonly store: FStoreInterface,
-    @Inject(EventPublisher) private readonly publisher: EventPublisher,
+    @Inject(DiTokens.ArticleConstructor) private readonly article: Constructor<ArticleAgg>,
     @Inject(Logger) public readonly logger: LoggerService,
-  ) {
-    this.article = this.publisher.mergeClassContext(ArticleAgg);
-  }
+  ) {}
 
   public async findAll<TData = unknown>(): Promise<ArticleInterface[]> {
     const events = await this.store.findAll();
