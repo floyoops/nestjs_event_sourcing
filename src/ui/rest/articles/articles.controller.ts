@@ -7,6 +7,7 @@ import { ListArticlesQuery } from '@app/query/list-articles/list-articles.query'
 import { GetAnArticleQuery } from '@app/query/get-an-article/get-an-article.query';
 import { UpdateAnArticleCommand } from '@app/command/articles/update-an-article/update-an-article.command';
 import { UpdateArticleDto } from '@ui/rest/articles/dto/update-article.dto';
+import { LikeAnArticleCommand } from '@app/command/articles/like-an-article/like-an-article.command';
 
 @Controller('articles')
 export class ArticlesController {
@@ -44,6 +45,16 @@ export class ArticlesController {
       await this.commandBus.execute(new UpdateAnArticleCommand(params.uuid, updateDto.title, updateDto.content));
     } catch (err) {
       throw new InternalServerErrorException('An error has occurred on update article');
+    }
+    return true;
+  }
+
+  @Put(':uuid/like')
+  public async likeArticle(@Param() params): Promise<boolean> {
+    try {
+      await this.commandBus.execute(new LikeAnArticleCommand(params.uuid));
+    } catch (err) {
+      throw new InternalServerErrorException('An error has occurred on like article');
     }
     return true;
   }

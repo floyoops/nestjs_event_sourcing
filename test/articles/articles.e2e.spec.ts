@@ -78,4 +78,27 @@ describe('articles', () => {
     const response3 = await request(app.getHttpServer()).get('/articles/' + articleUuid);
     expect(response3.body.title).toEqual('my title 3');
   });
+
+  it('like an article', async () => {
+    const articleUuid = '6297fcdb-67ee-4370-9b5d-98f19aa07f95';
+    await fixture.loadAnArticle(articleUuid);
+
+    // Like the article.
+    const response = await request(app.getHttpServer()).put('/articles/' + articleUuid + '/like');
+    expect(response.status).toEqual(200);
+    expect(response.text).toEqual('true');
+
+    // Check the like.
+    const response2 = await request(app.getHttpServer()).get('/articles/' + articleUuid);
+    expect(response2.body.liked).toEqual(1);
+
+    // Like again the article.
+    const response3 = await request(app.getHttpServer()).put('/articles/' + articleUuid + '/like');
+    expect(response3.status).toEqual(200);
+    expect(response3.text).toEqual('true');
+
+    // Check again the like.
+    const response4 = await request(app.getHttpServer()).get('/articles/' + articleUuid);
+    expect(response4.body.liked).toEqual(2);
+  });
 });
